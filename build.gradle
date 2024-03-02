@@ -27,6 +27,34 @@ dependencies {
     testImplementation 'org.junit.vintage:junit-vintage-engine:5.7.2'
 }
 
-test {
-    useJUnitPlatform()
+//test {
+//    useJUnitPlatform()
+//}
+
+configurations {
+    cucumberRuntime {
+        extendsFrom testImplementation
+    }
+}
+
+def tags = (findProperty('tags')== null )? 'not @exclude' : findProperty('tags') + 'and not @exclude'
+
+task testCustomtask() {
+    description("Runnit Cucumber Test")
+    dependsOn assemble, compileTestJava
+    doLast {
+        javaexec {
+            main = "io.cucumber.core.cli.Main"
+            clashpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
+            args = [
+                    '--plugin', 'pretty',
+                    '--plugin', 'html:reports/cucumber.html',
+                    '--plubin', 'json:reports/cucumber.json',
+                    '--glue', 'com.ari',
+                    '--tags', "${tags}",
+                    'src/test/resources'
+
+            ]
+        }
+    }
 }
