@@ -33,9 +33,10 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.10.1'
 }
 
-//test {
-//    useJUnitPlatform()
-//}
+test {
+    useJUnitPlatform()
+    systemProperty "cucumber.filter.tags", System.getProperty("cucumber.filter.tags")
+}
 
 configurations {
     cucumberRuntime {
@@ -43,23 +44,18 @@ configurations {
     }
 }
 
-def tags = (findProperty('tags')== null )? 'not @exclude' : findProperty('tags') + 'and not @exclude'
-
-task testCustomtask() {
-    description("Runnit Cucumber Test")
-    dependsOn assemble, compileTestJava
+tasks.register('webTest') {
+    dependsOn assemble, testClasses
     doLast {
         javaexec {
             main = "io.cucumber.core.cli.Main"
-            clashpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
+            classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
             args = [
                     '--plugin', 'pretty',
-                    '--plugin', 'html:reports/cucumber.html',
-                    '--plubin', 'json:reports/cucumber.json',
-                    '--glue', 'com.ari',
-                    '--tags', "${tags}",
+                    '--plugin', 'html:reports/cucumber-api-report.html',
+                    '--glue', 'com.ari.stepdef',
+                    '--tags', "@login or @sort or @atc or @cartpage or @checkout or @informationPage or @checkoutOverviewFinish",
                     'src/test/resources'
-
             ]
         }
     }
