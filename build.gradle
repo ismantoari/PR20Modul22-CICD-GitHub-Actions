@@ -44,7 +44,7 @@ configurations {
     }
 }
 
-tasks.register('webTest') {
+tasks.register('customWebTest') {
     dependsOn assemble, testClasses
     doLast {
         javaexec {
@@ -52,7 +52,7 @@ tasks.register('webTest') {
             classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
             args = [
                     '--plugin', 'pretty',
-                    '--plugin', 'html:reports/cucumber-api-report.html',
+                    '--plugin', 'html:reports/cucumber-web.html',
                     '--glue', 'com.ari.stepdef',
                     '--tags', "@login or @sort or @atc or @cartpage or @checkout or @informationPage or @checkoutOverviewFinish",
                     'src/test/resources'

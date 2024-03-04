@@ -15,6 +15,7 @@ public class BestUtil {
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
         options.addArguments("--remote-allow-origins=*");
+        //note headless for GithubAction
 
         WebDriverManager.chromedriver().setup();
 
