@@ -32,5 +32,5 @@ jobs:
 
     # Execute gradle command for runing cucumber test
     - name: Execute Test
-      run: ./gradle customWebTest
+      run: .\gradle customWebTest
     
