@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-runAutomation:
     runs-on: ubuntu-latest  
 
     steps:
@@ -32,5 +32,5 @@ jobs:
 
     # Execute gradle command for runing cucumber test
     - name: Execute Test
-      run: .\gradlew customWebTest
+      run: ./gradlew customWebTest
     
